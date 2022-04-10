@@ -1,0 +1,21 @@
+import numpy as np
+
+class KNN:
+    def create_data(self, dim = 2, num = 4):
+        self.data_size = num
+        self.data = np.array([1,1.1],[1,1],[0,0],[0,0.1])
+        self.labels = ['A','A','B','B']
+    
+    def k_nearest_neighbor_classify(self, newX, k):
+        dis_temp = np.tile(newX, (self.data_size,1)) - self.data
+        distance = ((dis_temp**2).sum(axis=1))**0.5
+        
+        sorted_dist_ind = distance.argsort()
+        class_count = {}
+        for i_ in range(min(k, self.data_size)):
+            i_class = self.labels[sorted_dist_ind[i_]]
+            class_count[i_class] = class_count.get(i_class,0) + 1
+        sorted_class = sorted(class_count.items(), key=operator.itemgetter(1), reverse=True)
+        return sorted_class[0][0]
+        
+    
